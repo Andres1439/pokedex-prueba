@@ -57,17 +57,17 @@ const Pokedex = () => {
     );
   };
 
-  const handleButtonClick = (buttonId) => {
-    let filteredData = [];
+  // const handleButtonClick = (buttonId) => {
+  //   let filteredData = [];
 
-    if (buttonId === "ver-todos") {
-      filteredData = pokemonData;
-    } else {
-      filteredData = pokemonData.filter((data) => data.types.some((type) => type.type.name.includes(buttonId)));
-    }
+  //   if (buttonId === "ver-todos") {
+  //     filteredData = pokemonData;
+  //   } else {
+  //     filteredData = pokemonData.filter((data) => data.types.some((type) => type.type.name.includes(buttonId)));
+  //   }
 
-    setPokemonData(filteredData);
-  };
+  //   setPokemonData(filteredData);
+  // };
 
   const results = !search
     ? pokemonData
