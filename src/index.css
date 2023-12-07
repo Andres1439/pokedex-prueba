@@ -317,3 +317,16 @@ main {
   background-color: var(--type-fairy);
   color: var(--clr-black);
 }
+
+button {
+  margin: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+button.active {
+  background-color: #007bff;
+  color: #fff;
+}

@@ -1,4 +1,3 @@
-// Pokedex.jsx
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import ListaPokedex from "./ListaPokedex";
@@ -9,12 +8,14 @@ const Pokedex = () => {
   const [search, setSearch] = useState("");
   const [tipoFiltrado, setTipoFiltrado] = useState("ver-todos");
   const [filteredData, setFilteredData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
 
   // Carga de datos
   useEffect(() => {
     const fetchPromises = [];
 
-    for (let i = 1; i <= 151; i++) {
+    for (let i = 1; i <= 1000; i++) {
       fetchPromises.push(fetch(URL + i).then((response) => response.json()));
     }
 
@@ -43,6 +44,24 @@ const Pokedex = () => {
     // Actualizar el estado con los pokémons filtrados
     setFilteredData(pokemonesFiltrados);
   }, [tipoFiltrado, pokemonData]);
+
+  // Validar la búsqueda
+  const results = !search
+    ? filteredData
+    : filteredData.filter((data) => data.name.toLowerCase().includes(search.toLowerCase()));
+
+  // Calcular índices de inicio y fin para la paginación
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const visibleData = results.slice(startIndex, endIndex);
+
+  // Total de páginas
+  const totalPages = Math.ceil(results.length / itemsPerPage);
+
+  // Cambiar de página
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   // Mostrar los pokemones
   const mostrarPokemon = (poke) => {
@@ -79,11 +98,6 @@ const Pokedex = () => {
       </div>
     );
   };
-
-  // Validar la búsqueda
-  const results = !search
-    ? filteredData
-    : filteredData.filter((data) => data.name.toLowerCase().includes(search.toLowerCase()));
 
   // Estructura
   return (
@@ -124,8 +138,16 @@ const Pokedex = () => {
       <main>
         <div id="todos">
           <div className="pokemon-todos" id="listaPokemon">
-            {results.map((data) => mostrarPokemon(data))}
+            {visibleData.map((data) => mostrarPokemon(data))}
           </div>
+        </div>
+        {/* Botones de paginación */}
+        <div>
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+            <button key={page} onClick={() => handlePageChange(page)} className={page === currentPage ? "active" : ""}>
+              {page}
+            </button>
+          ))}
         </div>
       </main>
     </div>
