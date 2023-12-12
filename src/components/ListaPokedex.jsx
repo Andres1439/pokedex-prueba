@@ -2,12 +2,34 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-const ListaPokedex = ({ tipos, setTipoFiltrado }) => {
+const tipos = [
+  "ver-todos",
+  "normal",
+  "fire",
+  "water",
+  "grass",
+  "electric",
+  "ice",
+  "fighting",
+  "poison",
+  "ground",
+  "flying",
+  "psychic",
+  "bug",
+  "rock",
+  "ghost",
+  "dark",
+  "dragon",
+  "steel",
+  "fairy",
+];
+
+const ListaPokedex = ({ setTipoFiltrado }) => {
   const botonesTipos =
-    tipos &&
+    tipos && // validar que tipos existe y tiene un valor diferente al "null" o "undefined"
     tipos.map((tipo) => (
       <button key={tipo} onClick={() => setTipoFiltrado(tipo)} className={`btn btn-header ${tipo}`} id={tipo}>
-        {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+        {tipo}
       </button>
     ));
 

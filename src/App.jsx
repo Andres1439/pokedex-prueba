@@ -8,7 +8,6 @@ function App() {
       <div className="logo">
         <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png" alt="Logo Pokédex" />
       </div>
-      <ListaPokedex />
       <Pokedex />
     </>
   );

@@ -6,16 +6,16 @@ const Pokedex = () => {
   const URL = "https://pokeapi.co/api/v2/pokemon/";
   const [pokemonData, setPokemonData] = useState([]);
   const [search, setSearch] = useState("");
-  const [tipoFiltrado, setTipoFiltrado] = useState("ver-todos");
-  const [filteredData, setFilteredData] = useState([]);
+  const [tipoFiltrado, setTipoFiltrado] = useState("ver-todos"); // Tipo que el usuario elige activamente
+  const [filteredData, setFilteredData] = useState([]); // Pokemones filtrados que se eligio
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 50;
+  const itemsPerPage = 51;
 
-  // Carga de datos
+  // Carga de datos ----------------------------------------------------
   useEffect(() => {
     const fetchPromises = [];
 
-    for (let i = 1; i <= 1000; i++) {
+    for (let i = 1; i <= 1017; i++) {
       fetchPromises.push(fetch(URL + i).then((response) => response.json()));
     }
 
@@ -29,28 +29,30 @@ const Pokedex = () => {
       });
   }, []);
 
-  // Filtrar pokemones
+  // Filtrar pokemones ------------------------------------------------
   const tieneTipo = (pokemon, tipoFiltrado) => {
-    const tipos = pokemon.types.map((type) => type.type.name);
-    return tipos.some((tipo) => tipo.includes(tipoFiltrado));
+    const tipos = pokemon.types.map((type) => type.type.name); //Esto crea un array con los dos tipos de los pokemon
+
+    return tipos.some((tipo) => tipo.includes(tipoFiltrado)); //Retoran un true o false, segun el tipo que contenga
   };
 
   useEffect(() => {
     // Filtrar los pokémons según el tipo seleccionado
     const pokemonesFiltrados = pokemonData.filter(
-      (pokemon) => tipoFiltrado === "ver-todos" || tieneTipo(pokemon, tipoFiltrado)
+      (pokemon) => tipoFiltrado === "ver-todos" || tieneTipo(pokemon, tipoFiltrado) //Dependiendo de lo que se cumpla, se va a mandar el pokemon al array de pokemones filtrados
     );
 
     // Actualizar el estado con los pokémons filtrados
     setFilteredData(pokemonesFiltrados);
   }, [tipoFiltrado, pokemonData]);
 
-  // Validar la búsqueda
-  const results = !search
-    ? filteredData
-    : filteredData.filter((data) => data.name.toLowerCase().includes(search.toLowerCase()));
+  // Validar la búsqueda ------------------------------------------------
+  const results = search // Valida si es truthy o falsy
+    ? filteredData.filter((data) => data.name.toLowerCase().includes(search.toLowerCase()))
+    : filteredData;
 
-  // Calcular índices de inicio y fin para la paginación
+  // Calcular índices de inicio y fin para la paginación ----------------
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const visibleData = results.slice(startIndex, endIndex);
@@ -63,7 +65,7 @@ const Pokedex = () => {
     setCurrentPage(newPage);
   };
 
-  // Mostrar los pokemones
+  // Mostrar los pokemones -----------------------------------------------
   const mostrarPokemon = (poke) => {
     let tipos = poke.types.map((type) => (
       <p key={type.type.name} className={`${type.type.name} tipo`}>
@@ -102,30 +104,7 @@ const Pokedex = () => {
   // Estructura
   return (
     <div>
-      <ListaPokedex
-        tipos={[
-          "ver-todos",
-          "normal",
-          "fire",
-          "water",
-          "grass",
-          "electric",
-          "ice",
-          "fighting",
-          "poison",
-          "ground",
-          "flying",
-          "psychic",
-          "bug",
-          "rock",
-          "ghost",
-          "dark",
-          "dragon",
-          "steel",
-          "fairy",
-        ]}
-        setTipoFiltrado={setTipoFiltrado}
-      />
+      <ListaPokedex setTipoFiltrado={setTipoFiltrado} />
       <div>
         <input
           value={search}
